@@ -69,3 +69,48 @@ It should be memorized that n! >> 2^n >> n^3 >> n^2 >> n log n >> n >> log n >> 
 ### Big Omega (Lower Bound) and Big Theta (Growth Rate) 
 
 For two function *f(n)* and *g(n)*, we say that *f(n)* is *Ω(g(n))* if there are constants c and N such that f(n) > c * g(n) for all n > N
+
+
+
+# L04 - Data Structures
+
+A lightning tour of fundamental data structures used for search.
+
+## Abstract Data Types vs. Data Structures
+
+* Abstract Data Types are things like stacks, queue, dictionary
+  * Does not specify an implementation
+* Concrete data structures
+  * Array, linked list, tree
+  * Implements an abstract data type
+
+## Data Structures and Searching
+
+* Organising data is important
+* It is helpful to organise data **with the task in mind**
+
+## malloc()
+
+* malloc(size_t size)
+* size_t is
+  * An unsigned integer
+  * Can be returned by the *sizeof* operator
+  * Widely used in **stdlib** to represent sizes
+  * *e.g.* malloc(sizeof(int))
+
+```C
+int A[NUMBER];
+/**
+ * while insertions < NUMBER array is OK
+ * BUT… has a limit
+ */
+int* B;
+/* always check return value of malloc()*/
+if( (B = (int *) calloc( NUMBER * sizeof(int) )) == NULL )
+{
+ printf(“malloc() error\n”);
+ exit(1);
+}
+/* B now comes with each slot initialized to 0 */
+```
+
