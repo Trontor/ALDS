@@ -66,13 +66,13 @@ It should be memorized that n! >> 2^n >> n^3 >> n^2 >> n log n >> n >> log n >> 
 
 * Log base does not matter
 
-### Big Omega (Lower Bound) and Big Theta (Growth Rate) 
+### Big Omega Ω (Lower Bound) and Big Theta Ө (Growth Rate) 
 
 For two function *f(n)* and *g(n)*, we say that *f(n)* is *Ω(g(n))* if there are constants c and N such that f(n) > c * g(n) for all n > N
 
 
 
-# L04 - Data Structures
+# L04 - Data Structures 101
 
 A lightning tour of fundamental data structures used for search.
 
@@ -113,4 +113,74 @@ if( (B = (int *) calloc( NUMBER * sizeof(int) )) == NULL )
 }
 /* B now comes with each slot initialized to 0 */
 ```
+
+
+
+# L05 - Data Structures, *The Basics*
+
+## Linked Lists
+
+* Each item (*key*) is located in an arbitrary place in memory
+* With a link (pointer) to the next item
+
+### Search Operations
+
+* If unsorted, finding an item in a linked list is still in Ө(n) time.
+* Once an insertion point has been determined, it is easy to insert (or delete) a new item, by rearranging links.
+* It takes extra space for each item in the list, and extra time to allocate the memory for the node for each item.
+
+### The Node
+
+```c
+typedef struct node {
+ record r; 
+ struct node *next;
+ } node_t;
+
+typedef node_t* node_ptr;
+
+node_ptr newnode;
+```
+
+###  Traversing the List
+
+```c
+p = listhead;
+/* Check if list is empty */
+if (p != NULL) {
+    /* Check if there exists a next node */
+    while (p -> next != NULL){
+        /* Print node information */
+        printf("%d\n", p->key);
+        /* Move to next node */
+        p = p -> next;
+    }
+    /* If there does not exist a next node, we reached the last node */
+    printf("%d\n", p -> key);
+}
+```
+
+### Inserting into the List
+
+```C
+/* First, you find a correct place in the list to insert the node */
+
+/* Adjust the pointers, for a parent node q that points to p */
+q -> next = newnode;
+newnode -> next = p
+
+```
+
+### Deleting from the List
+
+```c 
+/* We want to delete p */
+q -> next = p -> next;
+/* Free memory used at address p */
+free(p);
+```
+
+## Arrays vs Linked Lists
+
+Sorted arrays have a **fast binary search ** but **slow insertion** in order to keep it sorted.
 
