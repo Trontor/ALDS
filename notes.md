@@ -45,7 +45,7 @@ We want to characterize the run time of **any** algorithm
 
 ## Big-O Definition
 
-* For two function *f(n)* and *g(n)*, we say that *f(n)* is *O(g(n))* if there are constants c and N such that f(n) \< c * g(n) for all n > N
+* For two functions *f(n)* and *g(n)*, we say that *f(n)* is *O(g(n))* if there are constants c and N such that f(n) \< c * g(n) for all n > N
 * n^2 +33 is in O(n^2) because c = 2 and N= sqrt(33) then n^2+33 < 2n^2
 * n^2 + 33n + 17 is in O(n^2)
   * Because c = 2, N = 34 and as such n^2 +33n + 17 < 2n^2 for all n > 34
@@ -182,5 +182,51 @@ free(p);
 
 ## Arrays vs Linked Lists
 
-Sorted arrays have a **fast binary search ** but **slow insertion** in order to keep it sorted.
+Sorted arrays have a **fast binary search** but **slow insertion** in order to keep it sorted.
 
+Linked lists, we can't do binary search even if it is sorted, as we have to traverse through the whole list.
+
+|                      | One Search | One Insert |
+| -------------------- | :--------: | :--------: |
+| Unsorted Array       |     n      |     1      |
+| Sorted Array         |   log n    |     n      |
+| Unsorted Linked List |     n      |     1      |
+| Sorted Linked List   |     n      |     n      |
+
+We can see that using a sorted linked list provides no gain.
+
+# L06 - Binary Trees
+
+*From [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)*
+
+A **binary tree** is a [tree](https://en.wikipedia.org/wiki/Tree_structure) [data structure](https://en.wikipedia.org/wiki/Data_structure) in which each node has at most two [children](https://en.wikipedia.org/wiki/Child_node), which are referred to as the *left child* and the *right child*.
+
+A binary **search** tree is a sorted binary tree where the left child of a node is \< than the node's value, and the right child of the node is \> the nodes value.
+
+## Types
+
+![Image result for types of binary trees](http://www.csie.ntnu.edu.tw/~u91029/BinaryTree2.png) 
+
+
+
+| Type of Tree |                         Description                          |
+| :----------: | :----------------------------------------------------------: |
+|  Full Tree   |            Every node has either 0 or 2 children             |
+|   Complete   | Every level is completely filled (except possibly the last)  |
+|   Perfect    | All inner nodes have two children and all leaves have the same depth or same level |
+
+ 
+
+## Best Case Run Time
+
+* When it is *perfectly balanced*
+
+* Height of tree with n items is 
+  $$
+  \text{The height of any tree with n items is }
+  log_2(n)\\\
+  \text{Both the maximum and average length from root to any node is are also  }
+  log_2(n)
+  $$
+
+* Insertion/search/deletion are all *O(log n)* for a well-balanced tree 
