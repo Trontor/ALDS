@@ -42,7 +42,7 @@ for str in new_line_split:
 
 for key,val in header_dict.items():
     output_str = "* [%s](#%s)" % (key.replace("#", "").replace("*", "").strip(), val)
-    readme_str = "* [%s](notes.md#%s)" % (key.replace("#", "").strip(), val)
+    readme_str = "* [%s](notes.md#%s)" % (key.replace("*", "").replace("#", "").strip(), val)
     tab_count = key.count("#") - 1
     TOC_append += "\t" * tab_count + output_str + "\n"
     readme_toc += "\t" * tab_count + readme_str + "\n"
