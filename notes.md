@@ -264,5 +264,24 @@ Note: A **binary tree** is an **AVL tree** as long as each node has a balance fa
 
 ## Rotation
 
-[Click here for a in-depth look at AVL Tree rotations](avl-tree-rotation.md)
+[A highly suggested 'click here' for an in-depth look at AVL Tree rotations](avl-tree-rotation.md)
+
+The general idea:
+
+* Single rotation if the balance factor signs match
+  * For a left heavy tree, do a right rotation
+  * For a right heavy tree, do a left rotation
+* Double rotation if the balance factor signs do not match
+  * For a left heavy tree, do a left rotation on the left subtree, then a right rotation on the root tree
+  * For a right heavy tree, do a right rotation on the right subtree, then a left rotation on the root tree 
+
+Rotations are not specific to AVL trees, and appear in other implementations of data structures.
+
+Overall, it is important to remember we are working with [**binary search trees**](#l06---binary-search-trees), which means any rotation must result in a tree which is a valid binary search tree, that is: all node values to the right of a node are greater than the current node value, and vice versa for the nodes to the left.
+
+# L07 - Non-examinable Things
+
+Hahahaha
+
+# L08 - Deletion in BST
 

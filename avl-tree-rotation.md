@@ -1,8 +1,10 @@
 # AVL Tree Rotation
 
-*[Thanks to John Hargrove for his tutorial](https://www.cise.ufl.edu/~nemo/cop3530/AVL-Tree-Rotations.pdf)*
+**NOTE**: This will likely **NOT** render properly on mobile. The ASCII based trees will not show up appropriately rendered. Use the following link, or open this on a computer.
 
-This process may seem intimidating, and can be confusing very fast. The following may seem needlessly long to a few, but in order to grasp the entire process we will delve through the process step by step.
+*[Thanks to John Hargrove for his tutorial, of which this explanation was derived from](https://www.cise.ufl.edu/~nemo/cop3530/AVL-Tree-Rotations.pdf)*
+
+This concept of rotation in AVL's may seem intimidating, and can be confusing very fast. The following may seem needlessly long to a few, but in order to grasp the entire process we will delve through the process step by step.
 
 ## Identify a Need for Rotation
 
@@ -119,7 +121,7 @@ We need a **double rotation**.
 
 ## Performing a Double Rotation
 
-## Left-Right Rotation 
+### Left-Right Rotation 
 
 To fix the aforementioned issue we first apply a ***right rotation*** on the right subtree then a ***left rotation***. 
 
@@ -159,7 +161,7 @@ Notice how the signs match now? Lets now perform a final ***left rotation***, as
 
 Onto the next one (zzz)
 
-## Right-Left Rotation
+### Right-Left Rotation
 
 Mirror of the above one. Let's speed through this. 
 
@@ -171,18 +173,18 @@ Mirror of the above one. Let's speed through this.
 
 Different signs, **double rotate**. Since it is ***left heavy*** we first do a ***left rotation*** on the ***left*** subtree.
 
-Left subtree:
+*Left subtree:*
 
 **a**
    \
       **b**
 
-Rotated:
+*Rotated:*
       **b**
    /
 **a**
 
-Tree updated:
+*Tree updated:*
 
 ​             **c** = 14 (**-2**)
           /
@@ -190,17 +192,19 @@ Tree updated:
    /
 **a** = 9
 
-Signs match, still **left heavy**, **right rotate**:
+Signs match, still **left heavy**, so **right rotate**:
 
-* b becomes new root
-* c takes b's right child and makes it its left child
-* b makes c its left child
+* **b** becomes new root
+* **c** takes **b**'s right child and makes it its left child
+* **b** makes **c** its left child
 
 ​      **b** = 12
    /      \
 **a** = 9    **c** = 14
 
 This concept is hard enough to do conceptually, but implementing a recursive balancing algorithm that handles these 4 cases is harder.
+
+## Overall Procedure
 
 Here is some pseudocode to keep in mind:
 
