@@ -1,7 +1,5 @@
 # AVL Tree Rotation
 
-**NOTE**: This will likely **NOT** render properly on mobile. The ASCII based trees will not show up appropriately rendered. Use the following link, or open this on a computer.
-
 *[Thanks to John Hargrove for his tutorial, of which this explanation was derived from](https://www.cise.ufl.edu/~nemo/cop3530/AVL-Tree-Rotations.pdf)*
 
 This concept of rotation in AVL's may seem intimidating, and can be confusing very fast. The following may seem needlessly long to a few, but in order to grasp the entire process we will delve through the process step by step.
@@ -41,6 +39,8 @@ Height(Right_Subtree) > Height(Left_Subtree)
 This means that the tree is ***right heavy***. Logically, to fix a right heavy tree, we can perform a ***left rotation***!
 
 Trivially, a ***left heavy*** tree requires a ***right rotation***!
+
+<div style="page-break-after: always;"></div> 
 
 ### Single Left Rotation
 
@@ -119,6 +119,8 @@ Result:
 
 We need a **double rotation**.
 
+<div style="page-break-after: always;"></div> 
+
 ## Performing a Double Rotation
 
 ### Left-Right Rotation 
@@ -161,9 +163,13 @@ Notice how the signs match now? Lets now perform a final ***left rotation***, as
 
 Onto the next one (zzz)
 
+<div style="page-break-after: always;"></div> 
+
 ### Right-Left Rotation
 
-Mirror of the above one. Let's speed through this. 
+Mirror of the p
+
+revious Left-Right rotation. Let's speed through this. 
 
 ​         **c** = 14 (**-2**)
       /
@@ -203,6 +209,8 @@ Signs match, still **left heavy**, so **right rotate**:
 **a** = 9    **c** = 14
 
 This concept is hard enough to do conceptually, but implementing a recursive balancing algorithm that handles these 4 cases is harder.
+
+<div style="page-break-after: always;"></div> 
 
 ## Overall Procedure
 

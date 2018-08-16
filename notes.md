@@ -264,7 +264,7 @@ Note: A **binary tree** is an **AVL tree** as long as each node has a balance fa
 
 ## Rotation
 
-[A highly suggested 'click here' for an in-depth look at AVL Tree rotations](avl-tree-rotation.md)
+[A highly suggested 'click here' for an in-depth look at AVL Tree rotations](avl-tree-rotation.pdf)
 
 The general idea:
 
