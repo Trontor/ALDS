@@ -236,7 +236,7 @@ Evidently, a balanced tree is preferred.
 
 # L07 - AVL Trees
 
-A valiant attempt at getting a [binary search tree](#L06 - Binary Search Trees) to stay balanced! 
+A valiant attempt at getting a [binary search tree](#L06---Binary-Search-Trees) to stay balanced! 
 
 *But why?* Most operations on a BST take time proportional to the height of the tree, so it is desirable to keep the height small. 
 
