@@ -411,6 +411,20 @@ If we want to delete **M** our ideal candidates are **K** (inner most predecesso
 
 **In general, just replace it with the innermost successor (minimum value of right subtree)**
 
+## Deletion Complexity Analysis
+
+### Worst Case: 
+
+* Time to find node is *O(n)*
+* Time to find in-order predecessor or successor is *O(n)*
+* Total time: *O(2n) = O(n)*
+
+### Average Case:
+
+* Time to find node is *O(log n)*
+* Time to find in-order predecessor or successor is *O(log n)* if we specify one, otherwise it is *O(n)*
+* Total time is therefore *O(log n)* or *O(n)*
+
 # L09 - Multi-File Programming
 [← Return to Index](#table-of-contents)
 
