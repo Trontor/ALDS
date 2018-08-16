@@ -1,7 +1,5 @@
 # AVL Tree Rotation
 
-**IMPORTANT NOTE:** Don't read this .md file if the ASCII tree's are not formatted for you correctly, read from the [pdf](avl-tree-rotation.pdf).
-
 Written and compiled by *Trontor*, with special [thanks to John Hargrove for his tutorial](https://www.cise.ufl.edu/~nemo/cop3530/AVL-Tree-Rotations.pdf), of which this explanation was derived from.
 
 This concept of rotation in AVL's may seem intimidating, and it can get confusing very fast. The following may seem needlessly long to a few, but for my own understanding of the entire process I will delve through the process step by step.
@@ -89,7 +87,7 @@ Mirror of left rotation:
 
 If we look at the case of a single rotation, we can see the balance signs match. That is, for a right heavy tree **(+2, +1)** and a left heavy tree **(-2, -1)**.
 
-When we need a double rotation, the balance factor signs do not match! For the last example, we can see the balance factor pair is **(+2, -1)**.
+When we need a double rotation, the balance factor signs do not match! We will see in the next example, that the balance factor pair is **(+2, -1)**.
 
 However, once we rotate the subtree, the signs start to match **(+2, +1)**! Then, we can perform a final complete tree rotation.
 
@@ -111,13 +109,15 @@ This is obviously ***right heavy***, so lets do a ***left rotation***.
 
 Result:
 
-​      **c** = 14
+​      **c** = 14 (**-2**)
    /
-**a** = 9
+**a** = 9  (**+1**)
    \
       **b** = 12
 
-??? Unbalanced.
+??? 
+
+Unbalanced. Doing a right rotation on this result will get us back to where we started.
 
 We need a **double rotation**.
 
@@ -159,9 +159,11 @@ Now the whole tree looks like:
 
 Notice how the signs match now? Lets now perform a final ***left rotation***, as it is ***right heavy***
 
-​      **b** = 12, *Balance* = **+2**
+​      **b** = 12, *Balance* = **0**
    /     \
 **a** = 9   **c** = 14
+
+Perfect.
 
 Onto the next one (zzz)
 
@@ -169,9 +171,7 @@ Onto the next one (zzz)
 
 ### Right-Left Rotation
 
-Mirror of the p
-
-revious Left-Right rotation. Let's speed through this. 
+Mirror of the previous Left-Right rotation. Let's speed through this. 
 
 ​         **c** = 14 (**-2**)
       /
