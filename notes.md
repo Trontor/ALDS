@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 # L02 - Algorithms
 
 An algorithm is **a set of steps** to accomplish a task.
@@ -201,7 +205,7 @@ We can see that using a sorted linked list provides no gain.
 
 A **binary tree** is a [tree data structure](https://en.wikipedia.org/wiki/Tree_structure) in which each node has at most two [children](https://en.wikipedia.org/wiki/Child_node), which are referred to as the *left child* and the *right child*.
 
-A binary **search** tree is a sorted binary tree where the left child of a node is \< than the node's value, and the right child of the node is \> the nodes value.
+A binary **search** tree is a sorted binary tree where the left child of a node is \<= than the node's value, and the right child of the node is \> the nodes value.
 
 ## Types
 
@@ -279,9 +283,161 @@ Rotations are not specific to AVL trees, and appear in other implementations of 
 
 Overall, it is important to remember we are working with [**binary search trees**](#l06---binary-search-trees), which means any rotation must result in a tree which is a valid binary search tree, that is: all node values to the right of a node are greater than the current node value, and vice versa for the nodes to the left.
 
-# L07 - Non-examinable Things
+# L07/L08 - Deletion in BST
 
-Hahahaha
+*Not useful for assignment, but is **tested in exam!***
 
-# L08 - Deletion in BST
+Deletion from a tree is not as simple as deleting from an array or list. If we delete something, we have to identify what node to substitute it with.
 
+## Tree Traversal
+
+* Visit every node once
+* Do something during the visit to the node:
+  * Print the node value, or
+  * Mark the node as visited, or
+  * Check some property of the node
+
+Not specific to trees, as we can also traverse graphs and lists. Thankfully, traversing trees are easier than graphs, as trees are not cyclical (no node points to a parent node).
+
+Example tree:
+
+![Tree](https://i.imgur.com/trNKjd2.png)
+
+**Post-order Traversal**
+*Left, Right, Visit*
+
+```C
+traverse(t->left);
+visit(t);
+traverse(t->right);
+```
+
+G, F, K, J, Q, S, P, M
+
+You use this to free the nodes of the tree! **You cannot free a tree by just freeing the root**, because the memory addresses to other nodes still exist.
+
+**Pre-order Traversal**
+*Visit, Left, Right*
+
+``` 
+visit(t);
+traverse(t->left);
+traverse(t->right);
+```
+
+M, J, F, G, K, P, S, Q
+
+## **In-order Traversal**
+
+*Left, Visit, Right*
+
+F, G, J, K, M, P, Q, S
+
+```C
+void traverse(struct node *t)
+{
+    if(t != NULL)
+    {
+        traverse(t->left);
+        visit(t);
+        traverse(t->right);
+    }
+}
+```
+
+## Deleting an Item
+
+* Step 1: Find node to delete
+* Step 2: Delete it
+  * Case 1: Node is a leaf (no children)
+    * Just delete it, ez
+  * Case 2: Node has either a left **or** right child, ***not both***
+    * Replace with the left or right child respectively
+  * Case 3: Node has both a left child **and** a right child!
+    * This requires some analysis
+
+### Node With Two Children
+
+Referring back to this example:
+
+![Tree](https://i.imgur.com/trNKjd2.png)
+
+The nodes with two children here are **M** and **J**.
+
+If we want to delete **J**, we have two candidates (inner-most predecessor/successor) which are **K** and **G**. It doesn't matter what one is chosen. We replace **J** with **K** or **G** and still preserve the BST.
+
+If we want to delete **M** our ideal candidates are **K** (inner most predecessor) or **P** (inner-most successor). **K** has no children and as such is a technically better candidate.
+
+**In general, just replace it with the innermost successor (minimum value of right subtree)**
+
+# L10 - Multi-File Programming
+
+## Header Files
+
+Just like libraries in C# and Python. 
+
+It is a **.h** file that includes declarations and macro definitions to be shared amongst other source files.
+
+## Include
+
+```C
+/* Include file from system path for /include */
+#include <file>
+/* Include custom file of your own program*/
+#include "file.h"
+```
+
+The include directive works by telling the C preprocessor to read the specified files before the rest of the current file.
+
+## Makefiles
+
+*[This is a good tutorial, and covers some advanced makefile topics too.](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)*
+
+* Simplifies compilation of multiple files
+
+Take these three files for example:
+
+**hello.c**
+
+``` C
+#include <hellomake.h>
+int main() {
+  // call a function in another file
+  myPrintHelloMake();
+  return(0);
+}
+```
+
+**hellofunc.c** (function definitions)
+
+```c
+#include <stdio.h>
+#include <hellomake.h>
+
+/* Uses prototype from header file */
+void myPrintHelloMake() {
+  printf("Hello makefiles!\n");
+  return;
+}
+```
+
+**hellomake.h** (function declarations)
+
+```c
+void myPrintHelloMake(void);
+```
+
+Normally you would compile this with `gcc -o hellomake hellomake.c hellofunc.c`
+
+> Unfortunately, this approach to compilation has two downfalls. First, if you lose the compile command or switch computers you have to retype it from scratch, which is inefficient at best. Second, if you are only making changes to one .c file, recompiling all of them every time is also time-consuming and inefficient. So, it's time to see what we can do with a makefile. 
+
+The simplest makefile you could create looks like this:
+
+```makefile
+hellomake: hellomake.c hellofunc.c
+     gcc -o hellomake hellomake.c hellofunc.c
+```
+
+The first line let's the compiler know that if **`hellomake.c`** or **`hellofunc.c`** change then to recompile them.
+
+You can see in the second line, there is a tab before the gcc command. There must be a tab before any command or `make` won't be happy
