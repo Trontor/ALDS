@@ -1,8 +1,8 @@
 # AVL Tree Rotation
 
-*[Thanks to John Hargrove for his tutorial, of which this explanation was derived from](https://www.cise.ufl.edu/~nemo/cop3530/AVL-Tree-Rotations.pdf)*
+Written and compiled by *Trontor*, with special [thanks to John Hargrove for his tutorial](https://www.cise.ufl.edu/~nemo/cop3530/AVL-Tree-Rotations.pdf), of which this explanation was derived from.
 
-This concept of rotation in AVL's may seem intimidating, and can be confusing very fast. The following may seem needlessly long to a few, but in order to grasp the entire process we will delve through the process step by step.
+This concept of rotation in AVL's may seem intimidating, and it can get confusing very fast. The following may seem needlessly long to a few, but for my own understanding of the entire process I will delve through the process step by step.
 
 ## Identify a Need for Rotation
 
