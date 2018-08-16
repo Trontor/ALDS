@@ -5,7 +5,7 @@ This is just a collection of notes, coding snippets and algorithm definitions co
 Please feel free to branch or fork this repo!
 # Table of Contents
 * [L02 - Algorithms](notes.md#l02---algorithms)
-	* [Example: *Fibonacci Numbers*](notes.md#example:-*fibonacci-numbers*)
+	* [Example: *Fibonacci Numbers*](notes.md#example:-fibonacci-numbers)
 	* [Memoization](notes.md#memoization)
 	* [Complexity Analysis: General Method](notes.md#complexity-analysis:-general-method)
 * [L03 - Complexity Analysis](notes.md#l03---complexity-analysis)
@@ -17,7 +17,7 @@ Please feel free to branch or fork this repo!
 	* [Abstract Data Types vs. Data Structures](notes.md#abstract-data-types-vs.-data-structures)
 	* [Data Structures and Searching](notes.md#data-structures-and-searching)
 	* [malloc()](notes.md#malloc())
-* [L05 - Data Structures, *The Basics*](notes.md#l05---data-structures,-*the-basics*)
+* [L05 - Data Structures, *The Basics*](notes.md#l05---data-structures,-the-basics)
 	* [Linked Lists](notes.md#linked-lists)
 		* [Search Operations](notes.md#search-operations)
 		* [The Node](notes.md#the-node)

@@ -1,7 +1,7 @@
 import re
 
 def cleanse(str):
-    return str.replace("#", "").strip().lower().replace(" ","-")
+    return str.replace("#", "").replace("*", "").strip().lower().replace(" ","-")
 with open("notes.md", encoding="utf-8") as file:
     text = file.read()
     with open("Source\MD Rendering\\notes.bak", 'w', encoding="utf-8")  as backup_file:
