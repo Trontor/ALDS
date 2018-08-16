@@ -236,11 +236,11 @@ Evidently, a balanced tree is preferred.
 
 # L07 - AVL Trees
 
-A valiant attempt at getting a [binary search tree](#L06---Binary-Search-Trees) to stay balanced! 
+A valiant attempt at getting a [binary search tree](#l06---binary-search-trees) to stay balanced! 
 
 *But why?* Most operations on a BST take time proportional to the height of the tree, so it is desirable to keep the height small. 
 
-**The idea:** Make BST as close to [perfectly balanced](#Best Case Run Time) as possible.
+**The idea:** Make BST as close to [perfectly balanced](#best-case-run-time) as possible.
 
 There is overhead to this operation. With every insertion into a BST, a *rotation* may be performed to keep it balanced. As such, the Big O time complexity of insertion is:O(n log n).
 
