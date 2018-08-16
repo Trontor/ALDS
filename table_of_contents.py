@@ -1,7 +1,7 @@
 import re
 
 def cleanse(str):
-    return str.replace("#", "").replace("*", "").strip().lower().replace(" ","-")
+    return str.replace("#", "").strip().lower().replace(" ","-")
 with open("notes.md", encoding="utf-8") as file:
     text = file.read()
     with open("Source\MD Rendering\\notes.bak", 'w', encoding="utf-8")  as backup_file:
@@ -41,7 +41,7 @@ for str in new_line_split:
         header_dict[str] = cleansed
 
 for key,val in header_dict.items():
-    output_str = "* [%s](#%s)" % (key.replace("#", "").strip(), val)
+    output_str = "* [%s](#%s)" % (key.replace("#", "").replace("*", "").strip(), val)
     readme_str = "* [%s](notes.md#%s)" % (key.replace("#", "").strip(), val)
     tab_count = key.count("#") - 1
     TOC_append += "\t" * tab_count + output_str + "\n"

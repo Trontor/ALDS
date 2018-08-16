@@ -1,6 +1,6 @@
 # Table of Contents
 * [L02 - Algorithms](#l02---algorithms)
-	* [Example: *Fibonacci Numbers*](#example:-*fibonacci-numbers*)
+	* [Example: Fibonacci Numbers](#example:-*fibonacci-numbers*)
 	* [Memoization](#memoization)
 	* [Complexity Analysis: General Method](#complexity-analysis:-general-method)
 * [L03 - Complexity Analysis](#l03---complexity-analysis)
@@ -12,7 +12,7 @@
 	* [Abstract Data Types vs. Data Structures](#abstract-data-types-vs.-data-structures)
 	* [Data Structures and Searching](#data-structures-and-searching)
 	* [malloc()](#malloc())
-* [L05 - Data Structures, *The Basics*](#l05---data-structures,-*the-basics*)
+* [L05 - Data Structures, The Basics](#l05---data-structures,-*the-basics*)
 	* [Linked Lists](#linked-lists)
 		* [Search Operations](#search-operations)
 		* [The Node](#the-node)
@@ -433,7 +433,7 @@ The include directive works by telling the C preprocessor to read the specified 
 
 ## Makefiles
 
-*[This is a good tutorial, and covers some advanced makefile topics too.](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)*
+*[This is a good tutorial, and covers some extra makefile topics too.](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)*
 
 * Simplifies compilation of multiple files
 
