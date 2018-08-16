@@ -195,11 +195,11 @@ Linked lists, we can't do binary search even if it is sorted, as we have to trav
 
 We can see that using a sorted linked list provides no gain.
 
-# L06 - Binary Trees
+# L06 - Binary Search Trees
 
 *From [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)*
 
-A **binary tree** is a [tree](https://en.wikipedia.org/wiki/Tree_structure) [data structure](https://en.wikipedia.org/wiki/Data_structure) in which each node has at most two [children](https://en.wikipedia.org/wiki/Child_node), which are referred to as the *left child* and the *right child*.
+A **binary tree** is a [tree data structure](https://en.wikipedia.org/wiki/Tree_structure) in which each node has at most two [children](https://en.wikipedia.org/wiki/Child_node), which are referred to as the *left child* and the *right child*.
 
 A binary **search** tree is a sorted binary tree where the left child of a node is \< than the node's value, and the right child of the node is \> the nodes value.
 
@@ -220,13 +220,49 @@ A binary **search** tree is a sorted binary tree where the left child of a node 
 ## Best Case Run Time
 
 * When it is *perfectly balanced*
-
-* Height of tree with n items is 
-  $$
-  \text{The height of any tree with n items is }
-  log_2(n)\\\
-  \text{Both the maximum and average length from root to any node is are also  }
-  log_2(n)
-  $$
-
+* Height of tree with *n* items is at most the ceiling of *log_2(n)*
+  * Ceiling means the upper value (ceiling of 2.5 is 3)
+  * Quite simple: a perfectly balanced tree with 20 items will have a height of  5
 * Insertion/search/deletion are all *O(log n)* for a well-balanced tree 
+
+## Worst Case Run Time 
+
+* The worst case run time occurs when items are inserted in a sorted order. 
+* This makes the BST degenerate into a linked list
+* The height of this tree of *n* items is *n*
+* Insertion/search/deletion are all O(n), yikes!
+
+Evidently, a balanced tree is preferred. 
+
+# L07 - AVL Trees
+
+A valiant attempt at getting a [binary search tree](#L06 - Binary Search Trees) to stay balanced! 
+
+*But why?* Most operations on a BST take time proportional to the height of the tree, so it is desirable to keep the height small. 
+
+**The idea:** Make BST as close to [perfectly balanced](#Best Case Run Time) as possible.
+
+There is overhead to this operation. With every insertion into a BST, a *rotation* may be performed to keep it balanced. As such, the Big O time complexity of insertion is:O(n log n).
+
+However, search is guaranteed to be O(log n).
+
+There are many balanced tree implementations, but we care only about **AVL Trees**.
+
+## General Procedure
+
+* Insert node in its appropriate location as you would to a regular BST.
+
+* For each node, we can evaluate the *balance factor* for the node
+
+  ##### Balance Factor
+
+  Balance_Factor(N) = Height(Right_Subtree(N)) – Height(Left_Subtree(N)) 
+
+* If the difference is > 1, then we balance using an operation called **rotation**
+
+Note: A **binary tree** is an **AVL tree** as long as each node has a balance factor that is -1, 0 or 1
+
+## Rotation
+
+[Click here for a in-depth look at AVL Tree rotations](avl-tree-rotation.md)
+
