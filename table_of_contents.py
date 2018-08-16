@@ -21,13 +21,13 @@ print("Identified first header: %s" % first_header)
 remove_toc = text.split(first_header)[0]
 text = text.replace(remove_toc, "")
 
-for str in match_obj[1:]:
+for str in match_obj[:]:
     new_str = "%s\n[← Return to Index](#%s)" % (str, cleanse(TOC_append))
     if not new_str in text:
         text = text.replace(str, new_str)
         print(new_str)
     else:
-        print("There is already an index specifier for %s"% str)
+        print("There is already an index specifier for %s, great!"% str)
 
 list_h1 = []
 new_line_split = text.split("\n")
@@ -35,8 +35,9 @@ new_line_split = text.split("\n")
 header_dict = {}
 for str in new_line_split:
     cleansed = cleanse(str)
-    if str.startswith("# ") or str.startswith("## "):
+    if str.startswith("# ") or str.startswith("## ") or str.startswith("### "):
         header_dict[str] = cleansed
+
 for key,val in header_dict.items():
     output_str = "* [%s](#%s)" % (key.replace("#", "").strip(), val)
     tab_count = key.count("#") - 1
