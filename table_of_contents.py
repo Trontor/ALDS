@@ -1,57 +1,98 @@
 import re
+import string
 
-def cleanse(str):
-    return str.replace("#", "").replace(":", "").replace("*", "").strip().lower().replace(" ","-")
-with open("notes.md", encoding="utf-8") as file:
+letters = list(string.ascii_uppercase)
+
+
+def my_lower(str_to_change):
+    output = str_to_change
+    # Changes only letters to lower, this avoids greek characters like omega and theta being messed up
+    for char in letters:
+        if char in output:
+            output = output.replace(char, char.lower())
+    return output
+
+
+def cleanse(str_to_cleanse):
+    remove_lst = ['#', ':', '*']
+    for char in remove_lst:
+        str_to_cleanse = str_to_cleanse.replace(char, "")
+    return my_lower(str_to_cleanse).strip().replace(" ", "-")
+
+# List of constant file paths
+MD_FILE_NAME = "notes.md"
+MD_BACKUP_PATH = "Source\MD Rendering"
+MD_BACKUP_NAME = MD_FILE_NAME.replace(".md", ".bak")
+
+# Open md file
+with open(MD_FILE_NAME, encoding="utf-8") as file:
+    # Read file contents into a string variable
     text = file.read()
-    with open("Source\MD Rendering\\notes.bak", 'w', encoding="utf-8")  as backup_file:
+    # Make sure we back up the original file
+    with open("%s\%s" % (MD_BACKUP_PATH, MD_BACKUP_NAME), 'w', encoding="utf-8") as backup_file:
         backup_file.write(text)
-TOC_append = "# Table of Contents\n"
-if TOC_append in text:
-    text = text.replace(TOC_append, "")
+
+# Header for TOC
+TOC_HEADER = "# Table of Contents\n"
+
+# Check if there is already a TOC header, if there is we need to remove it so our regex works
+if TOC_HEADER in text:
+    text = text.replace(TOC_HEADER, "")
     print("Removed existing TOC")
-# Oh, scary regex!
+
+# Pretty shitty regex that identifies headers
 regex_op = r"(^# +.*$)"
+# Finds all headers in the file
 match_obj = re.findall(regex_op, text, re.MULTILINE)
-if match_obj is None or len(match_obj) ==0:
+
+# If there is no header, then that's pretty weird
+if match_obj is None or len(match_obj) == 0:
     print("You must have at least one # header.")
     exit(0)
+
+# Identify the first header in the MD file, so we can put the TOC before it
 first_header = match_obj[0]
 print("Identified first header: %s" % first_header)
-remove_toc = text.split(first_header)[0]
-text = text.replace(remove_toc, "")
-
-readme_toc = TOC_append;
-
-for str in match_obj[:]:
-    new_str = "%s\n[← Return to Index](#%s)" % (str, cleanse(TOC_append))
-    if not new_str in text:
-        text = text.replace(str, new_str)
-        print(new_str)
+# Removes any exiting TOC that comes before the main header
+text = text.replace(text.split(first_header)[0], "")
+# A variable to store a separate table of contents for the README.md file, if needed
+readme_toc = TOC_HEADER
+# The main table of contents that will be generated
+main_toc = TOC_HEADER
+# Loops through each header to add a "return to index" option
+for header in match_obj[:]:
+    new_str = "%s\n[← Return to Index](#%s)\n" % (header, cleanse(TOC_HEADER))
+    # Check if the link does not already 1exists
+    if new_str not in text:
+        text = text.replace(header, new_str)
+        print("Added return link for header: %s" % header)
     else:
-        print("There is already an index specifier for %s, great!"% str)
+        print("There is already an index specifier for %s, great!" % str)
 
-list_h1 = []
-new_line_split = text.split("\n")
+file_lines = text.split("\n")
 # Store a list of headers in order
 header_dict = {}
-for str in new_line_split:
-    cleansed = cleanse(str)
-    if str.startswith("# ") or str.startswith("## ") or str.startswith("### "):
-        header_dict[str] = cleansed
+for line in file_lines:
+    cleansed = cleanse(line)
+    # Only track h1 -> h3
+    if line.startswith("# ") or line.startswith("## ") or line.startswith("### "):
+        header_dict[line] = cleansed
 
-for key,val in header_dict.items():
+for key, val in header_dict.items():
     output_str = "* [%s](#%s)" % (key.replace("#", "").replace("*", "").strip(), val)
-    readme_str = "* [%s](notes.md#%s)" % (key.replace("*", "").replace("#", "").strip(), val)
+    readme_str = "* [%s](%s#%s)" % (key.replace("*", "").replace("#", "").strip(), MD_FILE_NAME, val)
+    # Tracking how many tabs to indent result
     tab_count = key.count("#") - 1
-    TOC_append += "\t" * tab_count + output_str + "\n"
+    main_toc += "\t" * tab_count + output_str + "\n"
     readme_toc += "\t" * tab_count + readme_str + "\n"
-text = TOC_append + text
+# Append the TOC to the document contents
+text = main_toc + text
 
+# Write to file
 write_conf = input("Write to notes.md file?")
 if write_conf.lower().startswith("y"):
-    with open("notes.md",'w', encoding="utf-8") as output_file:
-         output_file.write(text)
+    with open(MD_FILE_NAME, 'w', encoding="utf-8") as output_file:
+        output_file.write(text)
 
 if input("Update README.md? ").strip().lower().startswith("y"):
     with open("readme.md", 'r+', encoding="utf-8") as readme_file:

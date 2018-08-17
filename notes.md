@@ -1,43 +1,47 @@
 # Table of Contents
 * [L02 - Algorithms](#l02---algorithms)
-	* [Example: Fibonacci Numbers](#example-fibonacci-numbers)
-	* [Memoization](#memoization)
-	* [Complexity Analysis: General Method](#complexity-analysis-general-method)
+  * [Example: Fibonacci Numbers](#example-fibonacci-numbers)
+  * [Memoization](#memoization)
+  * [Complexity Analysis: General Method](#complexity-analysis-general-method)
 * [L03 - Complexity Analysis](#l03---complexity-analysis)
-	* [Big-O Definition](#big-o-definition)
-	* [Big-O Arithmetic](#big-o-arithmetic)
-	* [Big-O Hierarchy](#big-o-hierarchy)
-	* [Big Omega Ω (Lower Bound) and Big Theta Ө (Growth Rate)](#big-omega-ω-(lower-bound)-and-big-theta-ө-(growth-rate))
+  * [Big-O Definition](#big-o-definition)
+  * [Big-O Arithmetic](#big-o-arithmetic)
+  * [Big-O Hierarchy](#big-o-hierarchy)
+  * [Big Omega Ω (Lower Bound) and Big Theta Ө (Growth Rate)](#big-omega-Ω-(lower-bound)-and-big-theta-Ө-(growth-rate))
 * [L04 - Data Structures 101](#l04---data-structures-101)
-	* [Abstract Data Types vs. Data Structures](#abstract-data-types-vs.-data-structures)
-	* [Data Structures and Searching](#data-structures-and-searching)
-	* [malloc()](#malloc())
+  * [Abstract Data Types vs. Data Structures](#abstract-data-types-vs.-data-structures)
+  * [Data Structures and Searching](#data-structures-and-searching)
+  * [malloc()](#malloc())
 * [L05 - Data Structures, The Basics](#l05---data-structures,-the-basics)
-	* [Linked Lists](#linked-lists)
-		* [Search Operations](#search-operations)
-		* [The Node](#the-node)
-		* [Traversing the List](#traversing-the-list)
-		* [Inserting into the List](#inserting-into-the-list)
-		* [Deleting from the List](#deleting-from-the-list)
-	* [Arrays vs Linked Lists](#arrays-vs-linked-lists)
+  * [Linked Lists](#linked-lists)
+  	* [Search Operations](#search-operations)
+  	* [The Node](#the-node)
+  	* [Traversing the List](#traversing-the-list)
+  	* [Inserting into the List](#inserting-into-the-list)
+  	* [Deleting from the List](#deleting-from-the-list)
+  * [Arrays vs Linked Lists](#arrays-vs-linked-lists)
 * [L06 - Binary Search Trees](#l06---binary-search-trees)
-	* [Types](#types)
-	* [Best Case Run Time](#best-case-run-time)
-	* [Worst Case Run Time](#worst-case-run-time)
+  * [Types](#types)
+  * [Best Case Run Time](#best-case-run-time)
+  * [Worst Case Run Time](#worst-case-run-time)
 * [L07 - AVL Trees](#l07---avl-trees)
-	* [General Procedure](#general-procedure)
-	* [Rotation](#rotation)
+  * [General Procedure](#general-procedure)
+  * [Rotation](#rotation)
 * [L07/L08 - Deletion in BST](#l07/l08---deletion-in-bst)
-	* [Tree Traversal](#tree-traversal)
-	* [In-order Traversal](#in-order-traversal)
-	* [Deleting an Item](#deleting-an-item)
-		* [Node With Two Children](#node-with-two-children)
+  * [Tree Traversal](#tree-traversal)
+  * [In-order Traversal](#in-order-traversal)
+  * [Deleting an Item](#deleting-an-item)
+  	* [Node With Two Children](#node-with-two-children)
+  * [Deletion Complexity Analysis](#deletion-complexity-analysis)
+  	* [Worst Case:](#worst-case)
+  	* [Average Case:](#average-case)
 * [L09 - Multi-File Programming](#l09---multi-file-programming)
-	* [Header Files](#header-files)
-	* [Include](#include)
-	* [Makefiles](#makefiles)
+  * [Header Files](#header-files)
+  * [Include](#include)
+  * [Makefiles](#makefiles)
 # L02 - Algorithms
 [← Return to Index](#table-of-contents)
+
 
 An algorithm is **a set of steps** to accomplish a task.
 
@@ -77,6 +81,7 @@ If T(n) is the ***number of operations*** to calculate the ***n'th*** Fibonacci 
 # L03 - Complexity Analysis
 [← Return to Index](#table-of-contents)
 
+
 We want to characterize the run time of **any** algorithm
 
 * Identify the **most expensive operation**
@@ -114,6 +119,7 @@ For two function *f(n)* and *g(n)*, we say that *f(n)* is *Ω(g(n))* if there ar
 
 # L04 - Data Structures 101
 [← Return to Index](#table-of-contents)
+
 
 A lightning tour of fundamental data structures used for search.
 
@@ -159,6 +165,7 @@ if( (B = (int *) calloc( NUMBER * sizeof(int) )) == NULL )
 
 # L05 - Data Structures, *The Basics*
 [← Return to Index](#table-of-contents)
+
 
 ## Linked Lists
 
@@ -240,6 +247,7 @@ We can see that using a sorted linked list provides no gain.
 # L06 - Binary Search Trees
 [← Return to Index](#table-of-contents)
 
+
 *From [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)*
 
 A **binary tree** is a [tree data structure](https://en.wikipedia.org/wiki/Tree_structure) in which each node has at most two [children](https://en.wikipedia.org/wiki/Child_node), which are referred to as the *left child* and the *right child*.
@@ -279,6 +287,7 @@ Evidently, a balanced tree is preferred.
 
 # L07 - AVL Trees
 [← Return to Index](#table-of-contents)
+
 
 A valiant attempt at getting a [binary search tree](#l06---binary-search-trees) to stay balanced! 
 
@@ -325,6 +334,7 @@ Overall, it is important to remember we are working with [**binary search trees*
 
 # L07/L08 - Deletion in BST
 [← Return to Index](#table-of-contents)
+
 
 *Not useful for assignment, but is **tested in exam!***
 
@@ -427,6 +437,7 @@ If we want to delete **M** our ideal candidates are **K** (inner most predecesso
 
 # L09 - Multi-File Programming
 [← Return to Index](#table-of-contents)
+
 
 ## Header Files
 
