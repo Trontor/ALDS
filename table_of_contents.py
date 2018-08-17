@@ -14,7 +14,7 @@ def my_lower(str_to_change):
 
 
 def cleanse(str_to_cleanse):
-    remove_lst = ['#', ':', '*']
+    remove_lst = ['#', ':', '*', '(', ')']
     for char in remove_lst:
         str_to_cleanse = str_to_cleanse.replace(char, "")
     return my_lower(str_to_cleanse).strip().replace(" ", "-")
@@ -67,7 +67,7 @@ for header in match_obj[:]:
         text = text.replace(header, new_str)
         print("Added return link for header: %s" % header)
     else:
-        print("There is already an index specifier for %s, great!" % str)
+        print("There is already an index specifier for %s, great!" % header)
 
 file_lines = text.split("\n")
 # Store a list of headers in order
