@@ -7,7 +7,8 @@
 	* [Big-O Definition](#big-o-definition)
 	* [Big-O Arithmetic](#big-o-arithmetic)
 	* [Big-O Hierarchy](#big-o-hierarchy)
-	* [Big Omega Ω (Lower Bound) and Big Theta Ө (Growth Rate)](#big-omega-Ω-lower-bound-and-big-theta-Ө-growth-rate)
+	* [Big Omega Ω (Lower Bound)](#big-omega-Ω-lower-bound)
+	* [Big Theta Ө (Growth Rate)](#big-theta-Ө-growth-rate)
 * [L04 - Data Structures 101](#l04---data-structures-101)
 	* [Abstract Data Types vs. Data Structures](#abstract-data-types-vs.-data-structures)
 	* [Data Structures and Searching](#data-structures-and-searching)
@@ -25,7 +26,6 @@
 	* [Best Case Run Time](#best-case-run-time)
 	* [Worst Case Run Time](#worst-case-run-time)
 * [L07 - AVL Trees](#l07---avl-trees)
-  * [Rotation](#rotation)
 	* [General Procedure](#general-procedure)
 	* [Rotation](#rotation)
 * [L07/L08 - Deletion in BST](#l07/l08---deletion-in-bst)
@@ -40,6 +40,26 @@
 	* [Header Files](#header-files)
 	* [Include](#include)
 	* [Makefiles](#makefiles)
+* [L09/10 - Distribution Counting](#l09/10---distribution-counting)
+	* [Definition](#definition)
+	* [Steps](#steps)
+	* [Stable Sort?](#stable-sort?)
+	* [Complexity and Example](#complexity-and-example)
+		* [Task](#task)
+		* [Count](#count)
+		* [Cumulative Count](#cumulative-count)
+		* [Redistribution](#redistribution)
+* [L10/11 - Hash tables](#l10/11---hash-tables)
+	* [Complexity](#complexity)
+	* [Hash Function](#hash-function)
+	* [Modulus and Prime Utilisation](#modulus-and-prime-utilisation)
+	* [Hash Function for Strings](#hash-function-for-strings)
+	* [Collisions](#collisions)
+		* [Chaining](#chaining)
+		* [Open Addressing](#open-addressing)
+* [L11/12 - Selection/Insertion Sort](#l11/12---selection/insertion-sort)
+	* [Selection Sort](#selection-sort)
+	* [Insertion Sort](#insertion-sort)
 # L02 - Algorithms
 [← Return to Index](#table-of-contents)
 
@@ -112,11 +132,17 @@ It should be memorized that n! >> 2^n >> n^3 >> n^2 >> n log n >> n >> log n >> 
 
 * Log base does not matter
 
-## Big Omega Ω (Lower Bound) and Big Theta Ө (Growth Rate) 
+## Big Omega Ω (Lower Bound) 
 
 For two function *f(n)* and *g(n)*, we say that *f(n)* is *Ω(g(n))* if there are constants c and N such that f(n) > c * g(n) for all n > N
 
+## Big Theta Ө (Growth Rate) 
 
+For two functions *f(n)* and *g(n)* if there exists three constants c, d, N > 0 such that:
+
+` c * g(n) >= f(n) >= d*g(n) for all n > N `
+
+ then f(n) is in Ө(g(n))
 
 # L04 - Data Structures 101
 [← Return to Index](#table-of-contents)
@@ -509,3 +535,206 @@ hellomake: hellomake.c hellofunc.c
 The first line let's the compiler know that if **`hellomake.c`** or **`hellofunc.c`** change then to recompile them.
 
 You can see in the second line, there is a tab before the gcc command. There must be a tab before any command or `make` won't be happy
+
+# L09/10 - Distribution Counting
+[← Return to Index](#table-of-contents)
+
+
+## Definition
+
+A sorting algorithm that stores, for each `sortkey`, the number of records with the given `sortkey` (thus anticipating that keys might not be unique). With this information it is possible to place the records correctly into a sorted file. The algorithm is useful when the keys fall into a small range and many of them are equal.
+
+## Steps
+
+- **Input**: *an array of:*
+
+  - Records
+
+    or
+
+  - Keys + Pointers to Records
+
+- **Count** number of records associated with each key value (lower to upper)
+
+- **Redistribute** array elements
+
+- Output: Stable Sorted Array
+
+## Stable Sort?
+
+If we have elements ***R*** and ***S*** (in that order) with the same key and apply a sorting algorithm to it, it is considered a stable sort if ***R*** appears before ***S*** in the sorted array. Because they have the same key, it is easy to switch them up. Stable sorting algorithms preserve the order of elements with the same key.
+
+## Complexity and Example
+
+### Task
+
+Sort `[ 4, 4, 2, 2, 0, 2, 1, 3, 2, 4, 3, 1, 4, 3, 1, 4]` 
+
+### Count
+
+Count the number of records associated with each key value (lower to upper)
+
+Key **0** occurs **1** time
+
+0->1
+
+1->3
+
+2->4
+
+3->3
+
+4->5
+
+To perform this, we traverse this in **O(n)** worst case as a more effective way to do this for a computer is to go through go through once and increment the `counting` array at index `n` as we progress through the input array.
+
+### Cumulative Count
+
+The cumulative count is an array that stores at index `i` the number of elements from the input that is less than `i`
+
+`cumulativeCount = [0, 1, 4, 8, 11]` (0 elements less than 0, 1 element less than 1, etc.)
+
+### Redistribution
+
+We traverse the original input array, and copy each item to its new position as follows
+
+```C 
+aux_array[cumulativeCount[item.key]] = item
+cumulativeCount[item.key] += 1
+```
+
+# L10/11 - Hash tables
+[← Return to Index](#table-of-contents)
+
+
+This is a data structure that provides a means of accessing a desired item directly. For a hash table:
+
+## Complexity
+
+- Search is **O(1)** average case
+  - If the hash table is managed well
+
+However, the worst case is **O(n)**. 
+
+## Hash Function
+
+The hash table is an array/dictionary who's index is the result of a hash function. 
+
+![](images\hash.png)
+
+## Modulus and Prime Utilisation
+
+The number of keys that can be output by the hash table is often not known but it can be squished into an array using the modulo operator. You should always use a **prime number** to multiply and as the right hand side term of the modulo command.
+
+`hash(key) = (key * BIGPRIME ) % prime`
+
+## Hash Function for Strings
+
+Use a base mapping **power of 2** 	like so:
+
+If we want to map **c a t** we map it like so:
+
+` H("cat") = 32^2 * 3 + 32 * 1 + 32^0 + 20`
+
+Because **c = 3**, **a = 1**, and **t = 20**
+
+## Collisions
+
+When two keys map to the same array index. Good hash functions have fewer collisions, but we can never assume there will be none.
+
+### Chaining
+
+Add to the end of the linked list at the array entry.
+
+```C
+void insert( HT, item )
+{
+     new newnode = /* ... make a list node */
+    /* put --item-- in the list node */
+     index = hash(item->key);
+    if( HT[ index ] == NULL)
+     	HT[ index ] = newnode;
+    else
+    {
+         newnode->next = HT[ index ]->node;
+         HT[ index ] = newnode;
+    }
+}
+```
+
+### Open Addressing
+
+##### Linear Probing
+
+If there is a collision, put the item in the next available slot. Catastrophic failure when table full, also clustering can occur easily.
+
+##### Double Hashing
+
+Choose a second hash function.
+
+##### Load Factor **α**
+
+For **n** keys in **m** cells
+
+- α = n/m
+
+Average case, under some simplifying assumptions, expected time for insertion is:
+
+- Double hashing: **1/(1-α)** 
+- Linear probing: **1/(1-α)^2**
+
+Example: **α = 0.75**
+
+- Double hash insertion: 4 probes
+- Linear probing insertion: 16 probes
+
+Hash tables show fast lookup
+
+# L11/12 - Selection/Insertion Sort
+[← Return to Index](#table-of-contents)
+
+
+Sorting has many applications and is used widely. The two most naïve sorting algorithms are **selection sort** and **insertion sort**.
+
+## Selection Sort
+
+Select the lowest element and swap it with the first unsorted element
+
+- In place
+- Worst case **O(n^2)**
+- Best case **O(n^2)**
+- Average case **O(n^2)**
+
+```C
+void selection(item* A, int n)
+{
+    int i,j,min;
+    for (i = 0; i < n-1; i++) { /* why n-1? */ 
+        min = i;
+        for( j = i+1; j < n; j++ ) {
+            if (cmp( A[j], A[min] ) < 0) 
+                min = j;
+        }
+        SWAP( A[i], A[min] );
+    }
+}
+```
+
+## Insertion Sort
+
+Move each element to the appropriate spot in the array.
+
+For example:
+
+![](images\insertionsort.gif)
+
+```C
+void insertionsort()
+{ 
+    int i, j;
+ 	for (i = 1; i < n; i++)
+ 		for (j = i; j > 0 && x[j-1] > x[j]; j--)
+ 			swap(j-1, j);
+}
+```
+

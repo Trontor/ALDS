@@ -18,9 +18,3 @@ while i < length(A)
 end while
 ```
 
-## Selection Sort
-
-- Set a marker for the unsorted section at the front of the list
-- Repeat:
-  - Compare all unsorted numbers in order to select the smallest one
-  - Swap this number with the first number in the unsorted section
