@@ -620,7 +620,7 @@ However, the worst case is **O(n)**.
 
 The hash table is an array/dictionary who's index is the result of a hash function. 
 
-![](images\hash.png)
+![](images/hash.png)
 
 ## Modulus and Prime Utilisation
 
@@ -726,7 +726,7 @@ Move each element to the appropriate spot in the array.
 
 For example:
 
-![](images\insertionsort.gif)
+![](images/insertionsort.gif)
 
 ```C
 void insertionsort()
