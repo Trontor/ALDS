@@ -7,7 +7,8 @@
 	* [Big-O Definition](#big-o-definition)
 	* [Big-O Arithmetic](#big-o-arithmetic)
 	* [Big-O Hierarchy](#big-o-hierarchy)
-	* [Big Omega Ω (Lower Bound) and Big Theta Ө (Growth Rate)](#big-omega-Ω-lower-bound-and-big-theta-Ө-growth-rate)
+	* [Big Omega Ω (Lower Bound)](#big-omega-Ω-lower-bound)
+	* [Big Theta Ө (Growth Rate)](#big-theta-Ө-growth-rate)
 * [L04 - Data Structures 101](#l04---data-structures-101)
 	* [Abstract Data Types vs. Data Structures](#abstract-data-types-vs.-data-structures)
 	* [Data Structures and Searching](#data-structures-and-searching)
@@ -39,6 +40,26 @@
 	* [Header Files](#header-files)
 	* [Include](#include)
 	* [Makefiles](#makefiles)
+* [L09/10 - Distribution Counting](#l09/10---distribution-counting)
+	* [Definition](#definition)
+	* [Steps](#steps)
+	* [Stable Sort?](#stable-sort?)
+	* [Complexity and Example](#complexity-and-example)
+		* [Task](#task)
+		* [Count](#count)
+		* [Cumulative Count](#cumulative-count)
+		* [Redistribution](#redistribution)
+* [L10/11 - Hash tables](#l10/11---hash-tables)
+	* [Complexity](#complexity)
+	* [Hash Function](#hash-function)
+	* [Modulus and Prime Utilisation](#modulus-and-prime-utilisation)
+	* [Hash Function for Strings](#hash-function-for-strings)
+	* [Collisions](#collisions)
+		* [Chaining](#chaining)
+		* [Open Addressing](#open-addressing)
+* [L11/12 - Selection/Insertion Sort](#l11/12---selection/insertion-sort)
+	* [Selection Sort](#selection-sort)
+	* [Insertion Sort](#insertion-sort)
 # L02 - Algorithms
 [← Return to Index](#table-of-contents)
 
@@ -516,6 +537,8 @@ The first line let's the compiler know that if **`hellomake.c`** or **`hellofunc
 You can see in the second line, there is a tab before the gcc command. There must be a tab before any command or `make` won't be happy
 
 # L09/10 - Distribution Counting
+[← Return to Index](#table-of-contents)
+
 
 ## Definition
 
@@ -581,6 +604,8 @@ cumulativeCount[item.key] += 1
 ```
 
 # L10/11 - Hash tables
+[← Return to Index](#table-of-contents)
+
 
 This is a data structure that provides a means of accessing a desired item directly. For a hash table:
 
@@ -595,7 +620,7 @@ However, the worst case is **O(n)**.
 
 The hash table is an array/dictionary who's index is the result of a hash function. 
 
-![](D:\Documents\GitHub\ALDS\images\hash.png)
+![](images/hash.png)
 
 ## Modulus and Prime Utilisation
 
@@ -666,6 +691,8 @@ Example: **α = 0.75**
 Hash tables show fast lookup
 
 # L11/12 - Selection/Insertion Sort
+[← Return to Index](#table-of-contents)
+
 
 Sorting has many applications and is used widely. The two most naïve sorting algorithms are **selection sort** and **insertion sort**.
 
@@ -695,19 +722,21 @@ void selection(item* A, int n)
 
 ## Insertion Sort
 
-Move each element to the appropriate spot in the array.
+Iterate through the list and move each element to the appropriate spot in the array.
+
+
 
 For example:
 
-![](images\insertionsort.gif)
+![](images/insertionsort.gif)
 
 ```C
 void insertionsort()
 { 
     int i, j;
  	for (i = 1; i < n; i++)
- 		for (j = i; j > 0 && x[j-1] > x[j]; j--)
- 			swap(j-1, j);
+        for (j = i; j > 0 && x[j-1] > x[j]; j--)
+            swap(j-1, j);
 }
 ```
 

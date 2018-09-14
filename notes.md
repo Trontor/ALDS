@@ -722,7 +722,13 @@ void selection(item* A, int n)
 
 ## Insertion Sort
 
-Move each element to the appropriate spot in the array.
+Iterate through the list and move each element to the appropriate spot in the array.
+
+- In place
+- Stable
+- Worst case **O(n^2)**
+- Best case **O(n)** (already sorted)
+- Average case **O(n^2)**
 
 For example:
 
@@ -733,8 +739,73 @@ void insertionsort()
 { 
     int i, j;
  	for (i = 1; i < n; i++)
- 		for (j = i; j > 0 && x[j-1] > x[j]; j--)
- 			swap(j-1, j);
+        for (j = i; j > 0 && x[j-1] > x[j]; j--)
+            swap(j-1, j);
 }
 ```
 
+Usefulness of insertion sort: almost sorted files; or small files
+
+# L12 - Quicksort
+
+A divide-and-conquer sorting algorithm.
+
+## Quicksort: Basic idea
+
+- **Partition array:**
+  - Pick a pivot point
+  - Make everything larger than the pivot has a higher index
+  - Make everything smaller than the pivot has a smaller index
+
+- **Recursion**:
+
+  - Partition the left half of the array recursively
+  - Partition the right half of the array recursively
+
+  ```C
+  int partition(item A[],int l,int r);
+  void quicksort(item A[], int l, int r)
+  {
+      int i;
+      if (r <= l) return;
+      i = partition(A,l,r);
+      quicksort(A,l,i-1);
+      quicksort(A,i+1,r);
+  }
+  ```
+
+  This is conceptually simple, but partitioning is quite tricky.
+
+  ```c
+  int partition(item A[], int l, int r)
+  {
+      int i = l-1, j = r;
+      item v = A[r];
+      while( 1 )
+      {
+          while (less(A[++i], v) /* do nothing */ ;
+          while (less(v, A[--j]) /* do nothing */;
+                        if(i>=j) break;
+                        swap(A[i],A[j]);
+  	}
+      swap(A[i],A[r]);
+      return(i);
+  }	
+  ```
+
+- Worst case performance: **O(n^2)**
+
+- Best case performance: **O(n log n)**
+- Average performance: **O(n log n)**
+
+# L13 - Mergesort
+
+Merge Sort is a **divide and conquer algorithm**. It works by **recursively** breaking down a problem into two or more sub-problems of the same or related type, until these become simple enough to be solved directly. The solutions to the sub-problems are then combined to give a solution to the original problem. 
+
+So Merge Sort first divides the array into equal halves and then combines them in a sorted manner.
+
+## Procedure
+
+1. If it is only one element in the list it is already sorted, return.
+2. Divide the list recursively into two halves until it can no more be divided.
+3. Merge the smaller lists into new list in sorted order.
