@@ -793,19 +793,371 @@ A divide-and-conquer sorting algorithm.
   }	
   ```
 
+- In place
+
+- Unstable (for efficient implementations)
+
 - Worst case performance: **O(n^2)**
 
 - Best case performance: **O(n log n)**
+
 - Average performance: **O(n log n)**
 
 # L13 - Mergesort
+
+![](images/mergesort.gif)
 
 Merge Sort is a **divide and conquer algorithm**. It works by **recursively** breaking down a problem into two or more sub-problems of the same or related type, until these become simple enough to be solved directly. The solutions to the sub-problems are then combined to give a solution to the original problem. 
 
 So Merge Sort first divides the array into equal halves and then combines them in a sorted manner.
 
+- In place
+- Unstable (for efficient implementations)
+
+- Worst case: **O(n log n)** *(divide and conquer)*
+- Best case: **O(n log n)**
+- Average Case: **O(n)**
+
 ## Procedure
 
-1. If it is only one element in the list it is already sorted, return.
-2. Divide the list recursively into two halves until it can no more be divided.
-3. Merge the smaller lists into new list in sorted order.
+1. Divide the unsorted list into *n* sublists, each containing 1 element (a list of 1 element is considered sorted).
+2. Repeatedly [merge](https://en.wikipedia.org/wiki/Merge_algorithm) sublists to produce new sorted sublists until there is only 1 sublist remaining. This will be the sorted list.
+
+## Merging
+
+Merging is the tricky part, given two arrays we do the following:
+
+- Begin with two pointers that point to the start of the two arrays respectively.
+- Compare those pointers
+- Whoever has the smallest, we put that in the new merged array at index *k* (=0 initially)
+- Increment the pointer of the array that had the smallest element
+- Repeat until all pointers go to the end of their arrays
+
+## Recurrence Relation
+
+C(n) = 2 * C(n/2) + n - 1
+
+	= 2 [ 2 * C(n/4) + (n/2 - 1)] + n - 1
+	
+	--- log_2(n) splits
+
+C(n)	= 2^(log_n) + n + n + n + ... log n times ... + n
+
+## Bottom Up Mergesort
+
+So far, we've looked at top down (recursive) mergesort. Bottom up mergesort 
+
+# L14 - Master Theorem
+
+Don't have to remember the equations. If a question were to be asked on this topic, equations would be given and the application of them will be tested.
+
+## Divide and Sorting Algorithms
+
+Recurrence relations:
+
+One pass through the data reduces problem size by half. Process both halves:
+
+- ***Operation*** takes constant time **c**
+
+- ***Base case*** takes time **d**
+
+  T(1) = d
+
+  T(n) = 2*T(n/2) + nc
+
+  	= nc + 2cn/2 + 4cn/4... + n/2*2c + nd
+
+  T(n)	= c(n-1)*log_n + nd
+
+- Most common cases:
+
+  **T(n) = 2*T(n/2) + n**
+
+- General case:
+
+  **T(n) = a*T(n/b) + f(n)**
+
+  Where f(n) ∈ Θ(n^d)
+
+  a = number of sub-problems
+
+  b = size of subproblems
+
+  d = how much work to be done for each element
+
+- Most common case:
+
+  T(n) = 2*T(n/2) + n
+
+  **a = 2**, **b = 2**, **d = 1**
+
+## Relationship Between a, b, d
+
+Recall: 
+
+- a = number of sub problems
+- b = size of subproblems
+- d = how much work to be done for each element
+
+We can determine the complexity using this logic:
+
+- d > log_b(a) then => T(n) ∈ Θ( n^d )
+- d = log_b(a) then => T(n) ∈ Θ( n^d * log(n) )
+- d < log_b(a) then => T(n) ∈ Θ( n^(d*log_b(n)) )
+
+# L14/L15 - Priority Queues/Heaps
+
+## Priority Queues
+
+Introduction into graphing, as graphing algorithms rely deeply on priority queues. 
+
+> A **priority queue** is an [abstract data type](https://en.wikipedia.org/wiki/Abstract_data_type) which is like a regular [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)) or [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) data structure, but where additionally each element has a "priority" associated with it.
+
+[From Wikipedia](https://en.wikipedia.org/wiki/Priority_queue)
+
+A priority queue has the following operations:
+
+```C
+makePQ(); // Makes the priority queue
+enqueue(PQ, item); // Adds an item to the priority queue
+deletemax(PQ); // or deletemin()
+emptyPQ(); // Empties all of the queue
+changeWeight(PQ, item); // Changes the priority attached to an item
+```
+
+## Implementations
+
+#### Array
+
+- Unsorted array of ***n*** items
+  - Construction: ***O(n)***
+  - Get highest priority: ***O(n)***
+- Sorted array of N items:
+  - Construct: ***O(n^2)*** (depends on implementation)
+  - Get highest priority: ***O(1)***
+
+#### List
+
+- Unsorted list:
+  - Construct: ***O(n)***
+  - Get highest priority: ***O(n)***
+- Sorted List
+  - Construct: ***O(n^2)***
+  - Get highest priority: ***O(1)***
+
+Arrays are evidently superior as they allow random access.
+
+## Heap
+
+A heap is a:
+
+- Complete tree
+  - Balanced
+- Every node satisfies the "heap condition":
+  - parent->key **>=** child->key, for all children
+  - **Root is therefore the maximum** 
+
+![](images/heap.png)
+
+This heap can be represented as an array:
+
+![](images\heaparray.png)
+
+- **Parent** = i, value = A[i]
+- **Children of Parent** = A[parent * 2] and A[parent * 2 + 1]
+
+## Deleting The Max (Downheaping)
+
+1. Return the highest priority item (**root**)
+
+2. Fix the heap
+   - Put last item into the root position (For example, replace X with I in the example array above)
+   - Reduce the size of PQ by one
+   - Fix the heap condition for the root `downheap()`
+
+## Downheaping
+
+- Compare the new root to the value of its immediate children. 
+- Swap the root with a child if the child is greater than the root. 
+- Keep doing this as you proceed down the tree. 
+- Stop when there are no children or all children are less than the value of the parent
+
+```C
+downheap(int[] PQ, int k)
+{
+     int j,v;
+     v = PQ[k]; /* value, or priority */
+     while( k <= n/2 ) /* A[k] has children */
+     {
+         /* point to children*/
+         j= k*2;
+         /* j set to highest child*/
+         if(j<n && PQ[j]< PQ[j+1]) j++;
+         if (v>= PQ[j]) break; /* check heap OK */
+         PQ[k] = PQ[j]; k = j; /* swap and continue */
+     }
+     /* final position of original A[k] value*/
+     PQ[k] = v;
+}
+```
+
+## Upheaping
+
+This is the opposite of downheaping where we want to insert into the heap:
+
+```C
+void upheap(int* PQ, int k)
+{
+    int v;
+    v = PQ[k];
+    PQ[0] = INT_MAX; /* sentinel, limits.h */
+    while(PQ[k/2] <= v){ /* note integer arith */
+        PQ[k] = PQ[k/2];
+        k = k/2;	
+    }
+    PQ[k] = v;
+}
+```
+
+## Complexity Comparison
+
+Finding Max = O(1)
+
+Deleting Max = O(log n)
+
+Inserting = O(log n)
+
+## Heapsort
+
+The *heap* suggests a method for sorting:
+
+- Construct the heap
+- Swap the root (max) with the last element
+- Remove the last element from further consideration (decrease heap size by 1)
+- Fix heap using `downheap` ***O(log n)*** 
+
+# L16 - Introduction to Graphs
+
+## What is a graph?
+
+- A representation of a set of objects
+- Some pairs of objects are connected by links
+
+- Set of vertices **V** and edges **E** that connect objects
+- **Vertices** can contain information, while **edges** can have direction and/or weight.
+  - Comparing this with trees and linked lists, vertices are like nodes and edges are the links
+
+## Types of Graphs
+
+### Undirected Graphs
+![](images/undirectedgraph.png)
+
+Edges have no direction specified
+
+#### Connected
+
+- Every pair of vertices is connected (possibly indirectly)
+
+#### Unconnected
+
+- One or more vertices cannot be accessed from another one or more vertices
+
+### Directed Graphs
+
+Edge direction is specified
+
+##### Acyclic, Unconnected Directed Graph
+
+![](images/dag.png)=
+
+# Reachability
+
+Can you get from vertex A to vertex B?
+
+#### Weakly Connected Directed Graph
+
+If only some vertices are reachable 
+
+![](images/weakconnected.png)
+
+#### Strongly Connected Directed Graph
+
+Each vertex is reachable from every other vertex
+
+### Bipartite Graph
+
+![](images/bipartitegraph.png)
+
+- **U** and **V** are disjoint sets of vertexes
+- Every vertex in **U** connects to a vertex in **V** and vice versa
+
+### Completed Graph
+
+![](images/completegraph.png)
+
+- A complete graph has `V(V-1)/2` edges
+
+## Trees
+
+Trees are simply an undirected graph that is connected and acyclic. Any two vertices are connected by one simple path.
+
+## Representing Graph Vertices
+
+## Array Representation
+
+![](images/arrayrepresentationgraph.png)
+
+## Adjacency List
+
+![](images/adjacencylistrepresentationgraph.png)
+
+## Size Comparison
+
+The size of a array (matrix) representation is: ***O(V^2)***
+
+The size of an adjacency list representation is: ***O(V+E)***
+
+# L17 - Traversing Trees and Graphs
+
+## Traversal
+
+- **Traverse**: to pass or move over, along, or through
+- **Tree traversal:** the process of visiting (examining or updating) each node exactly once, in a systematic way
+- **Graph traversal:** the process of visiting all the nodes in a graph
+
+## Graph Traversal vs Tree Traversal
+
+Graph traversal complications due to:
+
+- Possible cycles
+- Not necessarily connected
+
+## Tree Traversal (BST, DFS, traversal DFS)
+
+The depth first search looks for the deepest node when searching.
+
+### Depth First Search
+
+Depth-first tree search can be done as:
+
+- In order
+- Pre order
+- Post order
+
+### Breadth First Search
+
+The obvious complement to depth first search (choose shallowest children)
+
+## Assumptions
+
+- Assumes every node is reachable from the root
+- Assumes every node has only one parent, can only be visited once
+
+However, graph traversal needs to make sure that:
+
+- Every node is reached
+- Every node is visited only once
+- No cycles, so you need to mark nodes as visited!
+
+
+
