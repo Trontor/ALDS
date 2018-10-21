@@ -60,6 +60,46 @@
 * [L11/12 - Selection/Insertion Sort](#l11/12---selection/insertion-sort)
 	* [Selection Sort](#selection-sort)
 	* [Insertion Sort](#insertion-sort)
+* [L12 - Quicksort](#l12---quicksort)
+	* [Quicksort: Basic idea](#quicksort-basic-idea)
+* [L13 - Mergesort](#l13---mergesort)
+	* [Procedure](#procedure)
+	* [Merging](#merging)
+	* [Recurrence Relation](#recurrence-relation)
+	* [Bottom Up Mergesort](#bottom-up-mergesort)
+* [L14 - Master Theorem](#l14---master-theorem)
+	* [Divide and Sorting Algorithms](#divide-and-sorting-algorithms)
+	* [Relationship Between a, b, d](#relationship-between-a,-b,-d)
+* [L14/L15 - Priority Queues/Heaps](#l14/l15---priority-queues/heaps)
+	* [Priority Queues](#priority-queues)
+	* [Implementations](#implementations)
+	* [Heap](#heap)
+	* [Deleting The Max (Downheaping)](#deleting-the-max-downheaping)
+	* [Downheaping](#downheaping)
+	* [Upheaping](#upheaping)
+	* [Complexity Comparison](#complexity-comparison)
+	* [Heapsort](#heapsort)
+* [L16 - Introduction to Graphs](#l16---introduction-to-graphs)
+	* [What is a graph?](#what-is-a-graph?)
+	* [Types of Graphs](#types-of-graphs)
+		* [Undirected Graphs](#undirected-graphs)
+		* [Directed Graphs](#directed-graphs)
+* [Reachability](#reachability)
+		* [Bipartite Graph](#bipartite-graph)
+		* [Completed Graph](#completed-graph)
+	* [Trees](#trees)
+	* [Representing Graph Vertices](#representing-graph-vertices)
+	* [Array Representation](#array-representation)
+	* [Adjacency List](#adjacency-list)
+	* [Size Comparison](#size-comparison)
+* [L17 - Traversing Trees and Graphs](#l17---traversing-trees-and-graphs)
+	* [Traversal](#traversal)
+	* [Graph Traversal vs Tree Traversal](#graph-traversal-vs-tree-traversal)
+	* [Tree Traversal (BST, DFS, traversal DFS)](#tree-traversal-bst,-dfs,-traversal-dfs)
+		* [Depth First Search](#depth-first-search)
+		* [Breadth First Search](#breadth-first-search)
+	* [Assumptions](#assumptions)
+	* [Traversing an Unconnected Graph (DFS)](#traversing-an-unconnected-graph-dfs)
 # L02 - Algorithms
 [← Return to Index](#table-of-contents)
 
@@ -747,6 +787,8 @@ void insertionsort()
 Usefulness of insertion sort: almost sorted files; or small files
 
 # L12 - Quicksort
+[← Return to Index](#table-of-contents)
+
 
 A divide-and-conquer sorting algorithm.
 
@@ -804,6 +846,8 @@ A divide-and-conquer sorting algorithm.
 - Average performance: **O(n log n)**
 
 # L13 - Mergesort
+[← Return to Index](#table-of-contents)
+
 
 ![](images/mergesort.gif)
 
@@ -848,6 +892,8 @@ C(n)	= 2^(log_n) + n + n + n + ... log n times ... + n
 So far, we've looked at top down (recursive) mergesort. Bottom up mergesort 
 
 # L14 - Master Theorem
+[← Return to Index](#table-of-contents)
+
 
 Don't have to remember the equations. If a question were to be asked on this topic, equations would be given and the application of them will be tested.
 
@@ -906,6 +952,8 @@ We can determine the complexity using this logic:
 - d < log_b(a) then => T(n) ∈ Θ( n^(d*log_b(n)) )
 
 # L14/L15 - Priority Queues/Heaps
+[← Return to Index](#table-of-contents)
+
 
 ## Priority Queues
 
@@ -1037,6 +1085,8 @@ The *heap* suggests a method for sorting:
 - Fix heap using `downheap` ***O(log n)*** 
 
 # L16 - Introduction to Graphs
+[← Return to Index](#table-of-contents)
+
 
 ## What is a graph?
 
@@ -1071,6 +1121,8 @@ Edge direction is specified
 ![](images/dag.png)=
 
 # Reachability
+[← Return to Index](#table-of-contents)
+
 
 Can you get from vertex A to vertex B?
 
@@ -1118,6 +1170,8 @@ The size of a array (matrix) representation is: ***O(V^2)***
 The size of an adjacency list representation is: ***O(V+E)***
 
 # L17 - Traversing Trees and Graphs
+[← Return to Index](#table-of-contents)
+
 
 ## Traversal
 
@@ -1159,5 +1213,43 @@ However, graph traversal needs to make sure that:
 - Every node is visited only once
 - No cycles, so you need to mark nodes as visited!
 
+## Traversing an Unconnected Graph (DFS)
 
+- Need to traverse each connected component
+- Still need to mark nodes as visited
+
+Take this graph for example:
+
+![Unconnected Graph DFS](images/unconnecteddfs.png)
+
+It can be represented as either an adjacency list or matrix representation. We will use the adjacency list for this question.
+
+In code, this can be represented using a linked list:
+
+```C
+/* adjacency list is an array of pointers to nodes; node is struct with value (nodeID)
+and next ptr*/
+struct node{
+    int value;
+	struct node *next;
+};
+struct node* adj[V];
+```
+
+Now we need to visit the notes, and update an array to track where we've visited.
+
+```C
+int visited[V];
+int order=0; /*keeps track of the order in
+ which nodes are visited */
+void visitDFS(int k)
+{
+    struct node* t;
+    visited[k] = ++order;
+    for(t = adj[k]; t != NULL; t = t->next){
+        if( !visited[t->v] )
+            visitDFS( t->v );
+    }
+}
+```
 
