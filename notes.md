@@ -100,6 +100,42 @@
 		* [Breadth First Search](#breadth-first-search)
 	* [Assumptions](#assumptions)
 	* [Traversing an Unconnected Graph (DFS)](#traversing-an-unconnected-graph-dfs)
+		* [Graph DFS Analysis](#graph-dfs-analysis)
+	* [Breadth First Search](#breadth-first-search)
+	* [Weighted Graphs](#weighted-graphs)
+* [L18 - Shortest Paths](#l18---shortest-paths)
+	* [Dijkstra’s Algorithm](#dijkstra’s-algorithm)
+	* [Code using a Priority Queue](#code-using-a-priority-queue)
+	* [Dijkstra's Algorithm Complexity Analysis](#dijkstra's-algorithm-complexity-analysis)
+	* [Limitations](#limitations)
+	* [Single Source vs All Pairs](#single-source-vs-all-pairs)
+		* [Using Dijkstra’s multiple times:](#using-dijkstra’s-multiple-times)
+* [L19 - All Pairs (Floyd-Warshall)](#l19---all-pairs-floyd-warshall)
+	* [Transitive Closure](#transitive-closure)
+	* [Warshall Algorithm](#warshall-algorithm)
+	* [Warshall Algorithm Analysis](#warshall-algorithm-analysis)
+	* [Floyd-Warshall Algorithm](#floyd-warshall-algorithm)
+	* [Notes on the Floyd-Warshall Algorithm](#notes-on-the-floyd-warshall-algorithm)
+	* [Big Assumptions](#big-assumptions)
+		* [Johnson's Algorithm](#johnson's-algorithm)
+* [L20 - Kruskal's Algorithm for MST](#l20---kruskal's-algorithm-for-mst)
+	* [Greedy Algorithms](#greedy-algorithms)
+	* [Spanning Tree](#spanning-tree)
+	* [Minimum Spanning Trees](#minimum-spanning-trees)
+	* [Why minimum spanning trees?](#why-minimum-spanning-trees?)
+	* [Kruskal's Algorithm](#kruskal's-algorithm)
+	* [Kruskal's Algorithm Analysis](#kruskal's-algorithm-analysis)
+	* [Union-Find/Disjoint-Set Data Structure](#union-find/disjoint-set-data-structure)
+		* [What is a disjoint set?](#what-is-a-disjoint-set?)
+		* [Union-Find Algorithms](#union-find-algorithms)
+		* [Array-based Union Find](#array-based-union-find)
+	* [Application to Kruskal's Algorithm](#application-to-kruskal's-algorithm)
+* [L21 - Prim's Algorithm](#l21---prim's-algorithm)
+* [L22 - Topological Sorting (Toposort)](#l22---topological-sorting-toposort)
+	* [What is toposort?](#what-is-toposort?)
+	* [Topological Sorting Algorithm Overview](#topological-sorting-algorithm-overview)
+	* [Toposort Example](#toposort-example)
+	* [Toposort Assumptions](#toposort-assumptions)
 # L02 - Algorithms
 [← Return to Index](#table-of-contents)
 
@@ -1252,4 +1288,456 @@ void visitDFS(int k)
     }
 }
 ```
+
+### Graph DFS Analysis
+
+- Fill in the visited array: **|V|**
+- Examine (at most) each edge twice: **|E|**
+- Overall: **|V|** + **|E|**
+
+## Breadth First Search
+
+We need to make sure:
+
+- Every node is visited, even if the graph is not connected,
+- Every node is visited only once
+
+```C
+int visited[V]; int order=0;
+void visitBFS(int k){
+    struct node* t;
+    enQ(Q,k);
+    while(!Qempty(Q)){
+        k = deQ(Q);
+        if( !visited[k] ){
+            visited[k] = ++order;
+            for(t = adj[k]; t != NULL; t = t->next){
+                if( !visited[t->num] )
+                    enQ(Q,t->num);
+            }
+        }
+    }
+}
+```
+
+## Weighted Graphs
+
+So far, we used arbitrary ordering of the connected nodes (determined by position in adjacency list or matrix). If we have a weighted graph, with each edge telling us information about that path taken to the next node, we can make better informed decisions. 
+
+# L18 - Shortest Paths
+[← Return to Index](#table-of-contents)
+
+
+![Weighted Graph](images/weightedgraph.png)
+
+Given: 
+
+- Directed graph **G(V, E)**
+- Source vertex `s` in `V` 
+- Determine: Shortest distance path from `s` to every other vertex in `V`
+
+The brute force approach (calculating all paths from `a` to `b`) is not feasible. For a graph with 20 nodes, there are 20! possibilities to traverse.
+
+## Dijkstra’s Algorithm 
+
+Given a graph and a source vertex in the graph, find shortest paths from source to all vertices in the given graph. Below are the detailed steps used in Dijkstra’s algorithm to find the shortest path from a single source vertex to all other vertices in the given graph. 
+
+Algorithm
+
+1. Create a set `sptSet` (shortest path tree set) that keeps track of vertices included in shortest path tree, i.e., whose minimum distance from source is calculated and finalized. Initially, this set is empty.
+2. Assign a distance value to all vertices in the input graph. Initialize all distance values as INFINITE. Assign distance value as 0 for the source vertex so that it is picked first.
+3. While `sptSet` does not include all vertices:
+   a) Pick a vertex `u` which is not in `sptSet` and has a minimum distance value. 
+   b) Include `u` to `sptSet`
+   c) Update distance value of all adjacent vertices of `u`. To update the distance values, iterate through all adjacent vertices. For every adjacent vertex `v`, if sum of distance value of `u` (from source) and weight of edge `u-v`, is less than the distance value of `v`, then update the distance value of `v`.
+
+See example [here](https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/)
+
+## Code using a Priority Queue
+
+```C
+void run(int** G, int Vsize, int s, int* pred, int* dist)
+{
+    pq_node_t* pq; /********** Assuming PQ is a minheap */
+    int u, v;
+    pq = makePQ(G); /************************** big-O(V) */
+    while( !emptyPQ(pq) ) /************************** big-O(V) */
+    {
+        u = deletemin(pq); /******************* big-O(log V) */
+        for(/*each v conneted to u */)
+            if(dist[u] + edgeweight(u,v) < dist[v])
+                update(v, pred, dist, pq); /***** big-O(log V) */
+        /************ big-O(E) for for loop */
+    }
+}
+```
+
+## Dijkstra's Algorithm Complexity Analysis
+
+Using the complexities in the code: total is **O((V+E) log V)**
+
+## Limitations
+
+- Assumes no negative edges
+
+## Single Source vs All Pairs
+
+What has been shown is an algorithm that can calculate the shortest path from a given node to a destination node. However, what if we want to find the shortest path from every other node? 
+
+### Using Dijkstra’s multiple times:
+
+Dijkstra’s algorithm: **O((V+E) log V)**
+
+Once for every vertex: O((V^2+VE) log V)
+
+Dense graphs have a lot of edges close to the number of vertices: making '**all pairs**' calculation **O(V^3 log V)** for dense graphs
+
+We can do better.
+
+# L19 - All Pairs (Floyd-Warshall)
+[← Return to Index](#table-of-contents)
+
+
+## Transitive Closure
+
+We begin this topic on the basis of ***transitive closure***. The [definition](https://www.geeksforgeeks.org/transitive-closure-of-a-graph/) of this is: Given a directed graph, find out if a vertex `j` is reachable from another vertex `i` for all vertex pairs (`i`, `j`) in the given graph. 
+
+![Transitive Easy Example](images/transitive1.png)
+
+Take for example the following graph:
+
+![Transitive Lecture Example](images/transitiveexample.png)
+
+This can be represented in the following matrix representation:
+
+|       |  0   |  1   |  2   |  3   |  4   |  5   |  6   |
+| :---: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| **0** |  0   |  1   |  0   |  0   |  0   |  0   |  0   |
+| **1** |  0   |  0   |  0   |  0   |  0   |  0   |  0   |
+| **2** |  0   |  0   |  0   |  1   |  0   |  0   |  0   |
+| **3** |  0   |  0   |  0   |  0   |  1   |  0   |  0   |
+| **4** |  0   |  0   |  0   |  0   |  0   |  0   |  0   |
+| **5** |  0   |  0   |  0   |  0   |  1   |  0   |  0   |
+| **6** |  0   |  0   |  0   |  0   |  0   |  1   |  0   |
+
+*The **left** side denotes the ''from" nodes, while the **right** side denotes the "to" node*
+
+If we look back at the graph, we can see that there is a path from node `6` to node `4` (through 5). There is also a final extra path from `2` to `4`.
+
+To achieve transitive closure, our matrix representation should look like so (changes in bold):
+
+|       |  0   |  1   |  2   |  3   |   4   |  5   |  6   |
+| :---: | :--: | :--: | :--: | :--: | :---: | :--: | :--: |
+| **0** |  0   |  1   |  0   |  0   |   0   |  0   |  0   |
+| **1** |  0   |  0   |  0   |  0   |   0   |  0   |  0   |
+| **2** |  0   |  0   |  0   |  1   | **1** |  0   |  0   |
+| **3** |  0   |  0   |  0   |  0   |   1   |  0   |  0   |
+| **4** |  0   |  0   |  0   |  0   |   0   |  0   |  0   |
+| **5** |  0   |  0   |  0   |  0   |   1   |  0   |  0   |
+| **6** |  0   |  0   |  0   |  0   | **1** |  1   |  0   |
+
+## Warshall Algorithm
+
+There exists an algorithm to achieve transitive closure, known as the Warshall Algorithm.
+
+```C
+/* intermediate nodes */
+for( i=0; i < V; i++)
+    /* from nodes */
+    for( s=0; s < V; s++)
+        /* to nodes */
+        for( t=0; t < V; t++)
+            if( A[s][i] && A[i][t])
+                A[s][t] = TRUE; /* TRUE == 1 */
+```
+
+## Warshall Algorithm Analysis
+
+- **O(V^3)**
+
+## Floyd-Warshall Algorithm
+
+The Floyd Warshall Algorithm is for solving the All Pairs Shortest Path problem. The problem is to find shortest distances between every pair of vertices in a given edge weighted directed Graph.
+
+```C
+// Solves the all-pairs shortest path problem using Floyd Warshall algorithm 
+void floydWarshall (int graph[][V]) 
+{ 
+    /* dist[][] will be the output matrix that will finally have the shortest  
+      distances between every pair of vertices */
+    int dist[V][V], i, j, k; 
+  
+    /* Initialize the solution matrix same as input graph matrix. Or  
+       we can say the initial values of shortest distances are based 
+       on shortest paths considering no intermediate vertex. */
+    for (i = 0; i < V; i++) 
+        for (j = 0; j < V; j++) 
+            dist[i][j] = graph[i][j]; 
+  
+    /* Add all vertices one by one to the set of intermediate vertices. 
+      ---> Before start of an iteration, we have shortest distances between all 
+      pairs of vertices such that the shortest distances consider only the 
+      vertices in set {0, 1, 2, .. k-1} as intermediate vertices. 
+      ----> After the end of an iteration, vertex no. k is added to the set of 
+      intermediate vertices and the set becomes {0, 1, 2, .. k} */
+    for (k = 0; k < V; k++) 
+    { 
+        // Pick all vertices as source one by one 
+        for (i = 0; i < V; i++) 
+        { 
+            // Pick all vertices as destination for the 
+            // above picked source 
+            for (j = 0; j < V; j++) 
+            { 
+                // If vertex k is on the shortest path from 
+                // i to j, then update the value of dist[i][j] 
+                if (dist[i][k] + dist[k][j] < dist[i][j]) 
+                    dist[i][j] = dist[i][k] + dist[k][j]; 
+            } 
+        } 
+    }  
+    // Print the shortest distance matrix 
+    printSolution(dist); 
+} 
+```
+
+## Notes on the Floyd-Warshall Algorithm
+
+- Gives the distance of the shortest path for all vertices
+- Does not establish the actual paths
+- Path information can be obtained through a small addition to the code:
+  - For each update to distance array, update path array to save: node that made the path shorter 
+
+## Big Assumptions
+
+For sparse graphs, adjacency list representation, use Johnson’s algorithm
+
+### Johnson's Algorithm
+
+- Run Dijkstra’s single source algorithm for each vertex
+- Use Fibonacci heap for priority queue
+
+Not that important for exam I think?
+
+# L20 - Kruskal's Algorithm for MST
+[← Return to Index](#table-of-contents)
+
+
+## Greedy Algorithms
+
+Greedy algorithms are used in optimization problems. They work on the assumption that the global optimal solution can be found by choosing the local optimal solution for each step. 
+
+- Dijkstra’s algorithm is greedy: takes the next best edge to add to the path tree
+
+## Spanning Tree
+
+[Source](https://www.ics.uci.edu/~eppstein/161/960206.html)
+
+A *spanning tree* of a graph is just a subgraph that contains all the vertices and is a tree. A graph may have many spanning trees; for instance the complete graph on four vertices.
+
+Take this graph for example:
+
+```asciiarmor
+   	o---o
+    |\ /|
+    | X |
+    |/ \|
+    o---o
+```
+
+This graph has sixteen spanning trees:
+
+has sixteen spanning trees:
+
+```asciiarmor
+    o---o    o---o    o   o    o---o
+    |   |    |        |   |        |
+    |   |    |        |   |        |
+    |   |    |        |   |        |
+    o   o    o---o    o---o    o---o
+
+    o---o    o   o    o   o    o   o
+     \ /     |\ /      \ /      \ /|
+      X      | X        X        X |
+     / \     |/ \      / \      / \|
+    o   o    o   o    o---o    o   o
+
+    o   o    o---o    o   o    o---o
+    |\  |       /     |  /|     \
+    | \ |      /      | / |      \
+    |  \|     /       |/  |       \
+    o   o    o---o    o   o    o---o
+
+    o---o    o   o    o   o    o---o
+    |\       |  /      \  |       /|
+    | \      | /        \ |      / |
+    |  \     |/          \|     /  |
+    o   o    o---o    o---o    o   o
+```
+
+## Minimum Spanning Trees
+
+Now we consider the original graph having weights/lengths for edges, a problem can now be developed:
+
+**How to find the spanning tree with a minimum length?**
+
+## Why minimum spanning trees?
+
+The standard application is to a problem like phone network design. You have a business with several offices; you want to lease phone lines to connect them up with each other; and the phone company charges different amounts of money to connect different pairs of cities. You want a set of lines that connects all your offices with a minimum total cost. It should be a spanning tree, since if a network isn't a tree you can always remove some edges and save money.
+
+## Kruskal's Algorithm
+
+- Sort the edges of the graph in increasing order by length.
+- Keep an empty subgraph
+- For each edge `e` in sorted order
+  - If the endpoints of `e` are disconnected in the subgraph
+    - add `e` to the subgraph
+- Return the subgraph
+
+## Kruskal's Algorithm Analysis
+
+The crux of the processing time goes into sorting the edge list. This can be done using mergesort/quicksort in O(E log E).
+
+## Union-Find/Disjoint-Set Data Structure
+
+[Source](https://www.geeksforgeeks.org/union-find/)
+
+### What is a disjoint set?
+
+A *disjoint-set data structure* is a data structure that keeps track of a set of elements partitioned into a number of disjoint (non-overlapping) subsets. Disjoint sets play a key role in Kruskal's algorithm
+
+### Union-Find Algorithms
+
+A [*union-find algorithm*](http://en.wikipedia.org/wiki/Disjoint-set_data_structure) is an algorithm that performs two useful operations on such a data structure:
+
+**Find:** Determine which subset a particular element is in. This can be used for determining if two elements are in the same subset.
+
+**Union:** Join two subsets into a single subset.
+
+### Array-based Union Find
+
+First, we construct a **bijection** - which is a fancy say of mapping our objects (i.e. nodes on a graph) to an id > 0. We can map arbitrarily. 
+
+We then get an array (assuming all objects are mapped to a distinct value). Take for example this array:
+
+| A    | B    | C    | D    | E    |
+| ---- | ---- | ---- | ---- | ---- |
+| 0    | 1    | 2    | 3    | 4    |
+
+If we apply the following instruction: **Union(C, E)** 
+
+either C takes on the value of E or vice versa. We can think of this as a parent-child relationship. The resulting array representation is:
+
+| A    | B    | C     | D    | E     |
+| ---- | ---- | ----- | ---- | ----- |
+| 0    | 1    | **4** | 3    | **4** |
+
+Now, let's say we want to apply the following operation: **Union(C, D)**
+
+We know from the previous operation that C is a child of E, the given operation will simply make D a child of E too!
+
+| A    | B    | C    | D     | E    |
+| ---- | ---- | ---- | ----- | ---- |
+| 0    | 1    | 4    | **4** | 4    |
+
+Not too complicated at all!
+
+## Application to Kruskal's Algorithm
+
+https://www.youtube.com/watch?v=JZBQLXgSGfs
+
+# L21 - Prim's Algorithm
+[← Return to Index](#table-of-contents)
+
+
+Kruskal's algorithm builds a MST one edge at a time. Prim's algorithm builds the MST one vertex at a time. 
+
+```pseudocode
+let T be a single vertex x
+while (T has fewer than n vertices) {
+    find the smallest edge connecting T to G-T
+    add it to T
+}
+```
+
+As we can see: ''find the smallest edge connecting T to G-T" can be computationally expensive. However, we can utilise a min heap to remember, for each vertex, the smallest edge connecting T with that vertex.
+
+```pseudocode
+Prim with heaps:
+	make a heap of values (vertex,edge,weight(edge))
+    initially (v,-,infinity) for each vertex
+        let tree T be empty
+    while (T has fewer than n vertices) {
+        let (v,e,weight(e)) have the smallest weight in the heap
+        remove (v,e,weight(e)) from the heap
+        add v and e to T
+        for each edge f=(u,v)
+        if u is not already in T
+            find value (u,g,weight(g)) in heap
+            if weight(f) < weight(g)
+            replace (u,g,weight(g)) with (u,f,weight(f))
+}
+```
+
+# L22 - Topological Sorting (Toposort)
+[← Return to Index](#table-of-contents)
+
+
+[Geeks for Geeks](https://www.geeksforgeeks.org/topological-sorting/)
+
+Requirements:
+
+- DAG Graph
+  - Directed
+  - Acyclic
+
+## What is toposort?
+
+A linear ordering of vertices such that for every directed edge `u->v`, vertex u comes before vertex v in the ordering.
+
+## Topological Sorting Algorithm Overview
+
+We can modify the depth-first search algorithm to sort the graph topologically. We can model the problem to use a stack. We start at an arbitrary vertex, and recursively traverse the neighbours the vertex points to. Once we encounter a sink (a vertex that does not point to another vertex, but rather has only vertices that point to it), we push the vertex to the stack and backtrack, adding each prior vertex into the stack. 
+
+## Toposort Example
+
+Consider the following graph:
+
+![Topological Sorting Example from Lecture](images/toposortexample.png)
+
+Let us apply the topological sorting algorithm using a stack.
+
+Let us start at an arbitrary vertex, say **4**.
+
+Here are the steps taken:
+
+- Start at `4`, recursively traverse its neighbours `0` and `2`. 
+  - Looking at `0` first, we see that it has neighbour `1` 
+  - Looking at `1`, we see that it has neighbour `2`
+  - `2` is a sink (points to no other vertex) and we add this to the stack
+- Our stack looks like: [2, ]
+- Now we backtrack - adding `1`, then `0` then `4` to the stack. 
+- We don't look at `2` again, since its already visited (in our stack).
+- Our stack looks like: [2, 1, 0, 4]
+- Now we start with another unvisited vertex (node), say **3**
+- Since all neighbours of 3 are in the stack (just `4` in this case), we just add 3 to the stack
+- Our stack looks like: [2,1,0,4,3]
+- Now we start with another unvisited vertex (node), say **7**
+- Since all neighbours of 7 are in the stack (just `0` in this case), we just add 7 to the stack
+- Our stack looks like: [2,1,0,4,3,7]
+- Now we start with another unvisited vertex (node), say **5**
+- Since all neighbours of 5 are in the stack (just `1` in this case), we just add 5 to the stack
+- Our stack looks like: [2,1,0,4,3,7,5]
+- Now we start with another unvisited vertex (node), say **6**
+- There are no neighbours of 6, just add it to the stack
+- Our stack looks like: [2,1,0,4,3,7,5,6]
+
+Our topological sorting result is an array comprised of the stack of elements taken in order. So one possible sorting is:
+
+6, 5, 7, 3, 4, 0, 1, 2
+
+## Toposort Assumptions
+
+- There must be at least one source, and one sink
+- This satisfies the condition: no cycles.
 
