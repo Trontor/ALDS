@@ -89,7 +89,7 @@ Please feel free to branch or fork this repo!
 	* [Types of Graphs](notes.md#types-of-graphs)
 		* [Undirected Graphs](notes.md#undirected-graphs)
 		* [Directed Graphs](notes.md#directed-graphs)
-* [Reachability](notes.md#reachability)
+	* [Reachability](notes.md#reachability)
 		* [Bipartite Graph](notes.md#bipartite-graph)
 		* [Completed Graph](notes.md#completed-graph)
 	* [Trees](notes.md#trees)

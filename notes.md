@@ -84,7 +84,7 @@
 	* [Types of Graphs](#types-of-graphs)
 		* [Undirected Graphs](#undirected-graphs)
 		* [Directed Graphs](#directed-graphs)
-* [Reachability](#reachability)
+	* [Reachability](#reachability)
 		* [Bipartite Graph](#bipartite-graph)
 		* [Completed Graph](#completed-graph)
 	* [Trees](#trees)
@@ -1156,7 +1156,7 @@ Edge direction is specified
 
 ![](images/dag.png)=
 
-# Reachability
+## Reachability
 [← Return to Index](#table-of-contents)
 
 
