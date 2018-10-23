@@ -133,6 +133,9 @@
 * [L21 - Prim's Algorithm](#l21---prim's-algorithm)
 * [L22 - Topological Sorting (Toposort)](#l22---topological-sorting-toposort)
 	* [What is toposort?](#what-is-toposort?)
+	* [Topological Sorting Algorithm Overview](#topological-sorting-algorithm-overview)
+	* [Toposort Example](#toposort-example)
+	* [Toposort Assumptions](#toposort-assumptions)
 # L02 - Algorithms
 [← Return to Index](#table-of-contents)
 
